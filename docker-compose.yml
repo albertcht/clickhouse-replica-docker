@@ -1,0 +1,45 @@
+version: "3.7"
+
+x-clickhouse-defaults: &clickhouse-defaults
+  restart: unless-stopped
+  image: clickhouse/clickhouse-server:22.9
+  ulimits:
+    nproc: 65535
+    nofile:
+      soft: 262144
+      hard: 262144
+
+services:
+  clickhouse-blue-1:
+    <<: *clickhouse-defaults
+    container_name: clickhouse-blue-1
+    hostname: clickhouse-blue-1
+    ports:
+      - 9001:9000
+      - 8123:8123
+      - 9181:9181
+    volumes:
+      - type: volume
+        source: ch-blue-1-data
+        target: /var/lib/clickhouse
+      - "./configs/gen/clickhouse-blue-1/config.d:/etc/clickhouse-server/config.d/"
+      - "./configs/gen/clickhouse-blue-1/users.d:/etc/clickhouse-server/users.d/"
+
+  clickhouse-blue-2:
+    <<: *clickhouse-defaults
+    container_name: clickhouse-blue-2
+    hostname: clickhouse-blue-2
+    ports:
+      - 9002:9000
+      - 8124:8123
+      - 9182:9181
+    volumes:
+      - type: volume
+        source: ch-blue-2-data
+        target: /var/lib/clickhouse
+      - "./configs/gen/clickhouse-blue-2/config.d:/etc/clickhouse-server/config.d/"
+      - "./configs/gen/clickhouse-blue-2/users.d:/etc/clickhouse-server/users.d/"
+
+volumes:
+  ch-blue-1-data:
+  ch-blue-2-data:

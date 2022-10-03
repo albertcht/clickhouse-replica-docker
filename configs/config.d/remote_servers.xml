@@ -1,0 +1,17 @@
+<clickhouse>
+    <remote_servers>
+        <events>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-blue-1</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-blue-2</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </events>
+    </remote_servers>
+</clickhouse>
